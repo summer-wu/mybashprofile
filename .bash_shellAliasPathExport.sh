@@ -230,6 +230,11 @@ export CHEATCOLOR=true
 ps $$|grep "bash" >/dev/null 2>&1
 if [ $? = 0 ]; then
 	export PS1="[\u@\h \W] \$"
+	powerline-daemon -q
+	POWERLINE_BASH_CONTINUATION=1
+	POWERLINE_BASH_SELECT=1
+	. /Library/Python/2.7/site-packages/powerline/bindings/bash/powerline.sh
+
 	if [ -f $(brew --prefix)/etc/bash_completion ]; then
     . $(brew --prefix)/etc/bash_completion
 	fi
