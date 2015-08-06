@@ -197,58 +197,140 @@
 # 
 # alias cd=cd_func
 
-#自己添加的alias
-alias ls='ls -@hFG ' #show-control-chars 
-alias la='ls -hAFG'                              #do not list implied . and .. 
-alias ll='ls -lhfG'                              # long list
-alias l.='ls -dhAFG .*'              #只显示本目录下的entry，不显示下一层目录
 
-alias rm='rm -i'
-alias cp='cp -i'
-alias mv='mv -i'
-#
-# Default to human readable figures
-alias df='df -h'
-alias du='du -h'
-#
-# Misc :)
-alias less='less -r -i -N'                          # raw control characters
-# alias whence='type -a'                        # where, of a sort
-alias grep='grep -ni --color'                     # show differences in colour
-alias egrep='egrep --color=auto'              # show differences in colour
-alias fgrep='fgrep --color=auto'              # show differences in colour
-alias vir='vim -R'		#vim -r是恢复，vim -R是只读
-alias ipaddress='ifconfig|grep inet.*netmask' #简化查找
-#http://hi.baidu.com/5217/blog/item/b67e60d0e85fd088a0ec9cd9.html 防止乱码
 
-alias ios-sim6='ios-sim --devicetypeid iPhone-6 launch' #ios-sim6在模拟器上运行这个app
 
-export EDITOR=/usr/bin/vim #/usr/bin/nano
-export CHEATCOLOR=true
 
-#如果当前的进程是bash才设置PS1、导入bash_completion
+
+function f_useColor(){ #设置有颜色的PS1
+    use_color=true
+
+	# Set colorful PS1 only on colorful terminals.
+	# dircolors --print-database uses its own built-in database
+	# instead of using /etc/DIR_COLORS.  Try to use the external file
+	# first to take advantage of user additions.  Use internal bash
+	# globbing instead of external grep binary.
+	safe_term=${TERM//[^[:alnum:]]/?}   # sanitize TERM
+	match_lhs=""
+	[[ -f ~/.dir_colors   ]] && match_lhs="${match_lhs}$(<~/.dir_colors)"
+	[[ -f /etc/DIR_COLORS ]] && match_lhs="${match_lhs}$(</etc/DIR_COLORS)"
+	[[ -z ${match_lhs}    ]] \
+	        && type -P dircolors >/dev/null \
+	        && match_lhs=$(dircolors --print-database)
+	[[ $'\n'${match_lhs} == *$'\n'"TERM "${safe_term}* ]] && use_color=true
+
+	if ${use_color} ; then
+	        # Enable colors for ls, etc.  Prefer ~/.dir_colors #64489
+	        if type -P dircolors >/dev/null ; then
+	                if [[ -f ~/.dir_colors ]] ; then
+	                        eval $(dircolors -b ~/.dir_colors)
+	                elif [[ -f /etc/DIR_COLORS ]] ; then
+	                        eval $(dircolors -b /etc/DIR_COLORS)
+	                fi
+	        fi
+
+	        if [[ ${EUID} == 0 ]] ; then
+	                PS1='\[\033[01;31m\]\u@\h\[\033[01;34m\] \W \$\[\033[00m\] '
+	        else
+	                PS1='\[\033[01;32m\]\u@\h\[\033[01;34m\] \w \$\[\033[00m\] '
+	        fi
+
+	        #alias ls='ls --color=auto'
+	        #alias grep='grep --colour=auto'
+	else
+	        if [[ ${EUID} == 0 ]] ; then
+	                # show root@ when we don't have colors
+	                PS1='\u@\h \W \$ '
+	        else
+	                PS1='\u@\h \w \$ '
+	        fi
+	fi
+	# Try to keep environment pollution down, EPA loves us.
+	unset use_color safe_term match_lhs
+}
+
+function f_alias(){
+	#自己添加的alias
+	alias ls='ls -@hFG ' #show-control-chars 
+	alias la='ls -hAFG'                              #do not list implied . and .. 
+	alias ll='ls -lhfG'                              # long list
+	alias l.='ls -dhAFG .*'              #只显示本目录下的entry，不显示下一层目录
+
+	alias rm='rm -i'
+	alias cp='cp -i'
+	alias mv='mv -i'
+	#
+	# Default to human readable figures
+	alias df='df -h'
+	alias du='du -h'
+	#
+	# Misc :)
+	alias less='less -r -i -N'                          # raw control characters
+	# alias whence='type -a'                        # where, of a sort
+	alias grep='grep -ni --color'                     # show differences in colour
+	alias egrep='egrep --color=auto'              # show differences in colour
+	alias fgrep='fgrep --color=auto'              # show differences in colour
+	alias vir='vim -R'		#vim -r是恢复，vim -R是只读
+	alias ipaddress='ifconfig|grep inet.*netmask' #简化查找
+	#http://hi.baidu.com/5217/blog/item/b67e60d0e85fd088a0ec9cd9.html 防止乱码
+
+	alias ios-sim6='ios-sim --devicetypeid iPhone-6 launch' #ios-sim6在模拟器上运行这个app
+	#free
+	alias free='python /Applications/Utilities/free.py'
+	
+	#下面这些都来自于https://github.com/mathiasbynens/dotfiles/blob/3a47ebe1faf72222b1915853a3ce093ac8908853/.aliases
+	## IP addresses来自于
+	alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
+	alias localip="ipconfig getifaddr en0"
+	alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
+	## Show/hide hidden files in Finder
+	alias show="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder"
+	alias hide="defaults write com.apple.finder AppleShowAllFiles -bool false && killall Finder"
+
+	## Hide/show all desktop icons (useful when presenting)
+	alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
+	alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
+	#来自https://github.com/justone/dockviz ,/var/run/docker.sock是在boot2docker中的，需要root权限才可以看到。
+    alias dockviz="docker run --rm -v /var/run/docker.sock:/var/run/docker.sock nate/dockviz"
+	alias dockviz-image="dockviz images -d | dot -Tpng -o images.png"
+	alias chrome-disable-web-security="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --disable-web-security"
+	
+	#自己用shell脚本写的whereis
+	alias whereis="~/.local/bin/whereis.sh"
+}
+
+function f_export(){
+	export EDITOR=/usr/bin/vim #/usr/bin/nano
+	export CHEATCOLOR=true
+}
+
+function f_plugins(){
+	#bashmarks
+	source ~/.local/bin/bashmarks.sh
+	#thefuck https://github.com/nvbn/thefuck
+	eval "$(thefuck-alias)"
+	#boot2docker设置shell环境变量
+	eval '$(boot2docker shellinit)'  &> /dev/null;
+	#20150701为了使用cocoapods注释掉下面两行
+	#export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+	#[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+	
+	#autojump
+    [[ -s $(brew --prefix)/etc/profile.d/autojump.sh ]] && . $(brew --prefix)/etc/profile.d/autojump.sh
+}
+#如果当前的进程是bash才设置PS1、导入bash_completion.$$是当前进程PID,$?上一条进程的返回值
 ps $$|grep "bash" >/dev/null 2>&1
 if [ $? = 0 ]; then
 	export PS1="[\u@\h \W] \$"
-	powerline-daemon -q
-	POWERLINE_BASH_CONTINUATION=1
-	POWERLINE_BASH_SELECT=1
-	. /Library/Python/2.7/site-packages/powerline/bindings/bash/powerline.sh
-
+	f_useColor;	unset f_useColor
 	if [ -f $(brew --prefix)/etc/bash_completion ]; then
     . $(brew --prefix)/etc/bash_completion
 	fi
 fi
 
-#free
-alias free='python /Applications/Utilities/free.py'
-#bashmarks
-source ~/.local/bin/bashmarks.sh
+f_alias
+f_export
+f_plugins
 
 
 
-
-#20150701为了使用cocoapods注释掉下面两行
-#export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
-
-#[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
