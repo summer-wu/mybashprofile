@@ -32,8 +32,8 @@ ZSH_THEME_GIT_PROMPT_CLEAN="$YS_VCS_PROMPT_CLEAN"
 #PROMPT是一个variable，parameter在shell中包括variable、expansion等。变量里面不能再保存变量。eval PROMPT时，只能对PROMPT这个变量执行parameter expansion，所以substring expansion只能对PROMPT这个变量执行，这显然不是我要的。我要的是对commit信息截取前20字符，所以可以调用function。
 function f_git_last_commit(){
 	local git_last_commit="$(git log --pretty=format:"%h \"%s\"" -1 2> /dev/null)" #这个变量是expansion之后的真实字符串
-	if [ ${#git_last_commit} -gt 30 ];    #  ${#git_last_commit} 这个变量字符串的长度
-	then echo ${git_last_commit:0:30}"\n";
+	if [ ${#git_last_commit} -gt 29 ];    #  ${#git_last_commit} 这个变量字符串的长度
+	then echo ${git_last_commit:9:20}"\n";
 	else echo  ${git_last_commit};
 	fi
 }

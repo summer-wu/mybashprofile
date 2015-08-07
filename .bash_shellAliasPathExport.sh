@@ -282,7 +282,7 @@ function f_alias(){
 	## IP addresses来自于
 	alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 	alias localip="ipconfig getifaddr en0"
-	alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
+	alias ips="ifconfig -a | /usr/bin/grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
 	## Show/hide hidden files in Finder
 	alias show="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder"
 	alias hide="defaults write com.apple.finder AppleShowAllFiles -bool false && killall Finder"
@@ -290,6 +290,7 @@ function f_alias(){
 	## Hide/show all desktop icons (useful when presenting)
 	alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
 	alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
+	
 	#来自https://github.com/justone/dockviz ,/var/run/docker.sock是在boot2docker中的，需要root权限才可以看到。
     alias dockviz="docker run --rm -v /var/run/docker.sock:/var/run/docker.sock nate/dockviz"
 	alias dockviz-image="dockviz images -d | dot -Tpng -o images.png"
@@ -317,6 +318,8 @@ function f_plugins(){
 	
 	#autojump
     [[ -s $(brew --prefix)/etc/profile.d/autojump.sh ]] && . $(brew --prefix)/etc/profile.d/autojump.sh
+    #从dotfiles抄来的
+    source ~/.functions
 }
 #如果当前的进程是bash才设置PS1、导入bash_completion.$$是当前进程PID,$?上一条进程的返回值
 ps $$|grep "bash" >/dev/null 2>&1

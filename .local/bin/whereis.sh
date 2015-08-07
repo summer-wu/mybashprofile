@@ -9,6 +9,6 @@ whereis_path="$whereis_man_path $whereis_bin_path"
 
 for i in $whereis_path
 do
-	#echo "find $i -type f -name $1"
-	find $i -type f -name $1 2>/dev/null
+	#echo find $i -type f -name "*$1*" 2>/dev/null
+	find $i -type f -name "*$1*" 2>/dev/null
 done
