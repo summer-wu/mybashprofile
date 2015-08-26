@@ -203,7 +203,8 @@ function getcertnames() {
 
 # `s` with no arguments opens the current directory in Sublime Text, otherwise
 # opens the given location
-function s() {
+#20150824 s被bashmark占用了，改为ss
+function ss() {
 	if [ $# -eq 0 ]; then
 		subl .;
 	else
@@ -247,4 +248,10 @@ function o() {
 # small enough for one screen.
 function tre() {
 	tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
+}
+
+#dashman
+function dashman(){
+	echo open dash://manpages:$1
+	open dash://manpages:$1
 }

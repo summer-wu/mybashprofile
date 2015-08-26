@@ -251,7 +251,7 @@ function f_useColor(){ #设置有颜色的PS1
 
 function f_alias(){
 	#自己添加的alias
-	alias ls='ls -@hFG ' #show-control-chars 
+	alias ls='ls -FG ' #show-control-chars,-@显示扩展属性，-F目录后面加上斜线，-G启用颜色 
 	alias la='ls -hAFG'                              #do not list implied . and .. 
 	alias ll='ls -lhfG'                              # long list
 	alias l.='ls -dhAFG .*'              #只显示本目录下的entry，不显示下一层目录
@@ -303,6 +303,7 @@ function f_alias(){
 function f_export(){
 	export EDITOR=/usr/bin/vim #/usr/bin/nano
 	export CHEATCOLOR=true
+	export NODE_PATH=/usr/local/lib/node_modules
 }
 
 function f_plugins(){
