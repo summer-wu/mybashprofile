@@ -6,9 +6,24 @@ whereis_path="$whereis_man_path $whereis_bin_path"
 #echo是调试用。本来想在function中调用，但是function中不能访问$1
 #echo "find $whereis_path -type f -name $1"
 #find $whereis_path ! -readable -prune -type f -name $1 
+function help(){
+	echo 'whereis usage:
+	exactly match:   whereis git
+	wildcard match:  whereis "git*"' 
+}
+function f_whereis(){ #Function中很多parameter都会修改，详见man-bash-FUNCTIONS
+	for i in $whereis_path
+	do
+		#echo find $i -type f -name "*$1*" 2>/dev/null
+		find $i -type f -name $1 2>/dev/null
+	done	
+}
 
-for i in $whereis_path
-do
-	#echo find $i -type f -name "*$1*" 2>/dev/null
-	find $i -type f -name $1 2>/dev/null
-done
+if [ -z $1 ];then #-z is zero return 1
+	help
+	exit 0 
+else
+	f_whereis $1
+fi
+
+
