@@ -251,10 +251,10 @@ function f_useColor(){ #设置有颜色的PS1
 
 function f_alias(){
 	#自己添加的alias
-	alias ls='ls -FG ' #show-control-chars,-@显示扩展属性，-F目录后面加上斜线，-G启用颜色 
-	alias la='ls -hAFG'                              #do not list implied . and .. 
-	alias ll='ls -lhfG'                              # long list
-	alias l.='ls -dhAFG .*'              #只显示本目录下的entry，不显示下一层目录
+	alias ls='ls -h -F --color --time-style=long-iso' #show-control-chars,-@显示扩展属性，-F目录后面加上斜线，-G启用颜色。这是gnu版本的ls（coreutils包中）
+	alias la='ls A'                              #do not list implied . and .. 
+	alias ll='ls -l'                              # long list
+	alias l.='ls -dA .*'              #只显示本目录下的entry，不显示下一层目录
 
 	alias rm='rm -i'
 	alias cp='cp -i'
@@ -322,6 +322,11 @@ function f_plugins(){
     #从dotfiles抄来的
     source ~/.functions
 }
+function f_path(){
+   export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH" 
+}
+
+function f_changePS1ForBash(){
 #如果当前的进程是bash才设置PS1、导入bash_completion.$$是当前进程PID,$?上一条进程的返回值
 ps $$|grep "bash" >/dev/null 2>&1
 if [ $? = 0 ]; then
@@ -331,10 +336,13 @@ if [ $? = 0 ]; then
     . $(brew --prefix)/etc/bash_completion
 	fi
 fi
+	
+}
 
 f_alias
 f_export
 f_plugins
-
+f_path
+f_changePS1ForBash
 
 

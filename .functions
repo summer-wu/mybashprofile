@@ -255,3 +255,11 @@ function dashman(){
 	echo open dash://manpages:$1
 	open dash://manpages:$1
 }
+
+#在拷贝xcode.app时要等待太久，cp -v对io要求太大会降低拷贝速度
+#usage: cpstat sourceDirectory destinationDirectory 
+#from http://unix.stackexchange.com/questions/65077/is-it-possible-to-see-cp-speed-and-copied
+cpstat () {
+  tar cf - "$1" | pv | (cd "$2";tar xf -)
+}
+

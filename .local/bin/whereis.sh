@@ -16,6 +16,7 @@ function f_whereis(){ #Function中很多parameter都会修改，详见man-bash-F
 	do
 		#echo find $i -type f -name "*$1*" 2>/dev/null
 		find $i -type f -name $1 2>/dev/null
+		find $i -type l -name $1 2>/dev/null #不能同时搜索两种类型，所以就再多搜索一次
 	done	
 }
 
