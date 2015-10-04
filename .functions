@@ -99,6 +99,7 @@ function gitio() {
 }
 
 # Start an HTTP server from a directory, optionally specifying the port
+#usage: server 80#listen on 80 port。default 8000 port
 function server() {
 	local port="${1:-8000}";
 	sleep 1 && open "http://localhost:${port}/" &
@@ -109,9 +110,10 @@ function server() {
 
 # Start a PHP server from a directory, optionally specifying the port
 # (Requires PHP 5.4.0+.)
+# usage: phpserver 80#listen on 80 port。default 8000 port
 function phpserver() {
 	local port="${1:-4000}";
-	local ip=$(ipconfig getifaddr en1);
+	local ip=$(ipconfig getifaddr en0);
 	sleep 1 && open "http://${ip}:${port}/" &
 	php -S "${ip}:${port}";
 }
@@ -262,4 +264,7 @@ function dashman(){
 cpstat () {
   tar cf - "$1" | pv | (cd "$2";tar xf -)
 }
-
+#podgempath
+podgempath () {
+	export GEM_PATH="$GEM_PATH:/Library/Ruby/Gems/2.0.0:/Users/n/.gem/ruby/2.0.0"
+}

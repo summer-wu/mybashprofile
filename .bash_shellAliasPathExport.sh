@@ -7,6 +7,7 @@
 #??
 # base-files version 4.0-9
 
+#如果从zsh切换到bash时，使用bash -l
 # ~/.bashrc: executed by bash(1) for interactive shells.
 
 # The latest version as installed by the Cygwin Setup program can
@@ -298,6 +299,7 @@ function f_alias(){
 	
 	#自己用shell脚本写的whereis
 	alias whereis="~/.local/bin/whereis.sh"
+    alias cnpm='npm --registry=https://registry.npm.taobao.org --disturl=https://npm.taobao.org/dist --userconfig=~/.cnpmrc'
 }
 
 function f_export(){
@@ -313,17 +315,21 @@ function f_plugins(){
 	eval "$(thefuck-alias)"
 	#boot2docker设置shell环境变量
 	eval '$(boot2docker shellinit)'  &> /dev/null;
-	#20150701为了使用cocoapods注释掉下面两行
-	#export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
-	#[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 	
 	#autojump
     [[ -s $(brew --prefix)/etc/profile.d/autojump.sh ]] && . $(brew --prefix)/etc/profile.d/autojump.sh
     #从dotfiles抄来的
     source ~/.functions
 }
-function f_path(){
-   export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH" 
+
+function f_rvm(){
+	export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+	[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*.
+#调用irvm后就不能再更改PATH了，否则会提示Warning! PATH is not properly set up, '/Users/naodongjiaolian/.rvm/gems/ruby-2.2.1/bin' is not at first place,
+}
+
+function f_setgnubinpath(){
+   export PATH="/usr/local/opt/coreutils/libexec/gnubin:/usr/local/sbin:$PATH" 
 }
 
 function f_changePS1ForBash(){
@@ -339,10 +345,11 @@ fi
 	
 }
 
+f_setgnubinpath
+f_rvm
 f_alias
 f_export
 f_plugins
-f_path
 f_changePS1ForBash
 
 
