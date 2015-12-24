@@ -272,7 +272,6 @@ function f_alias(){
 	alias egrep='egrep --color=auto'              # show differences in colour
 	alias fgrep='fgrep --color=auto'              # show differences in colour
 	alias vir='vim -R'		#vim -r是恢复，vim -R是只读
-	alias ipaddress='ifconfig|grep inet.*netmask' #简化查找
 	#http://hi.baidu.com/5217/blog/item/b67e60d0e85fd088a0ec9cd9.html 防止乱码
 
 	alias ios-sim6='ios-sim --devicetypeid iPhone-6 launch' #ios-sim6在模拟器上运行这个app
@@ -281,9 +280,9 @@ function f_alias(){
 	
 	#下面这些都来自于https://github.com/mathiasbynens/dotfiles/blob/3a47ebe1faf72222b1915853a3ce093ac8908853/.aliases
 	## IP addresses来自于
-	alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
-	alias localip="ipconfig getifaddr en0"
-	alias ips="ifconfig -a | /usr/bin/grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
+	alias ip_remote="dig +short myip.opendns.com @resolver1.opendns.com"
+	alias ip_local="ipconfig getifaddr en0"
+	alias ips_all="ifconfig -a | /usr/bin/grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
 	## Show/hide hidden files in Finder
 	alias show="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder"
 	alias hide="defaults write com.apple.finder AppleShowAllFiles -bool false && killall Finder"
@@ -300,6 +299,9 @@ function f_alias(){
 	#自己用shell脚本写的whereis
 	alias whereis="~/.local/bin/whereis.sh"
     alias cnpm='npm --registry=https://registry.npm.taobao.org --disturl=https://npm.taobao.org/dist --userconfig=~/.cnpmrc'
+
+    #git shortcuts
+    alias gitStashPullRebasePushStashpop='git stash && git pull --rebase && git push && git stash pop'
 }
 
 function f_export(){

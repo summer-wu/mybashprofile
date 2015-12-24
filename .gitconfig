@@ -6,6 +6,7 @@
 	unstage = reset HEAD
 	last = log -1
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset' --abbrev-commit --date=short
+    logonelinewithdate = log --color --pretty=format:'%C(bold white)%h%Creset -%C(bold green)%d%Creset %s %C(bold green)(%cd)%Creset %C(bold blue)<%an>%Creset' --abbrev-commit --date=short
 [user]
 	email = 286674783@qq.com
 	name = giveme5
@@ -27,3 +28,5 @@
 	clean = git-lfs clean %f
 	smudge = git-lfs smudge %f
 	required = true
+[merge]
+	tool = kdiff3

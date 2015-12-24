@@ -1,2 +1,14 @@
 *~
 .DS_Store
+ignored_instruments_files
+.idea/
+TTTAttributedLabelGitRepo/
+*.orig
+UILocal/
+fork_class_dump*
+.vscode
+.*
+ObjcUML/
+debugLogs/
+Docs/flymodeCrash/
+CrashLogData/
