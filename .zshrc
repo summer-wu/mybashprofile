@@ -85,3 +85,5 @@ source $ZSH/oh-my-zsh.sh
 
 #加载自定义的bash
 source $HOME/.bash_shellAliasPathExport.sh
+
+test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_integration.zsh

@@ -1,4 +1,5 @@
 syntax on
+set t_Co=256
 set shiftwidth=4
 set tabstop=4
 " set background=dark 在terminal.app中会让字体变成粗体
