@@ -302,6 +302,7 @@ function f_alias(){
 
     #git shortcuts
     alias gitStashPullRebasePushStashpop='git stash && git pull --rebase && git push && git stash pop'
+    alias gitDiffCached='git diff --cached'
 
 	#fir publish
 	alias firPublish='fir publish --token=d91c29edb9a2f19c3d053082c9420a1e '
