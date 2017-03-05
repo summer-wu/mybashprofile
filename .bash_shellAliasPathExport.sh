@@ -306,6 +306,12 @@ function f_alias(){
 
 	#fir publish
 	alias firPublish='fir publish --token=d91c29edb9a2f19c3d053082c9420a1e '
+
+	#git proxy
+	alias socks5git="ALL_PROXY=socks5://127.0.0.1:1080 git"
+
+	#emacs25(emacs.app)
+	alias emacs25="/Applications/Emacs.app/Contents/MacOS/Emacs"
 }
 
 function f_export(){
@@ -313,6 +319,7 @@ function f_export(){
 	export CHEATCOLOR=true
 	export NODE_PATH=/usr/local/lib/node_modules
 	export HOMEBREW_VERBOSE=true #让homebrew总是--verbose
+	export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles #从国内地址下载bottles
 }
 
 function f_plugins(){
@@ -340,16 +347,25 @@ function f_setgnubinpath(){
 }
 
 function f_changePS1ForBash(){
-#如果当前的进程是bash才设置PS1、导入bash_completion.$$是当前进程PID,$?上一条进程的返回值
-ps $$|grep "bash" >/dev/null 2>&1
-if [ $? = 0 ]; then
-	export PS1="[\u@\h \W] \$"
-	f_useColor;	unset f_useColor
-	if [ -f $(brew --prefix)/etc/bash_completion ]; then
-    . $(brew --prefix)/etc/bash_completion
+	#如果当前的进程是bash才设置PS1、导入bash_completion.$$是当前进程PID,$?上一条进程的返回值
+	ps $$|grep "bash" >/dev/null 2>&1
+	if [ $? = 0 ]; then
+		export PS1="[\u@\h \W] \$"
+		f_useColor;	unset f_useColor
+		if [ -f $(brew --prefix)/etc/bash_completion ]; then
+	    . $(brew --prefix)/etc/bash_completion
+		fi
 	fi
-fi
-	
+}
+
+function f_theos(){
+	export THEOS=/opt/theos
+	export PATH=$THEOS/bin:$PATH
+	export THEOS_DEVICE_IP=iphone6p THEOS_DEVICE_PORT=22
+}
+
+function f_wsybin(){ #设置我自己的bin目录。我自己的命令都以wsy开头
+   export PATH="$HOME/wsybin:$PATH"
 }
 
 f_setgnubinpath
@@ -358,5 +374,6 @@ f_alias
 f_export
 f_plugins
 f_changePS1ForBash
-
+f_wsybin
+f_theos
 

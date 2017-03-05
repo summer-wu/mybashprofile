@@ -5,13 +5,15 @@
 	br = branch
 	unstage = reset HEAD
 	last = log -1
-	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset' --abbrev-commit --date=short
     logonelinewithdate = log --color --pretty=format:'%C(bold white)%h%Creset -%C(bold green)%d%Creset %s %C(bold green)(%cd)%Creset %C(bold blue)<%an>%Creset' --abbrev-commit --date=short
 [user]
 	email = 286674783@qq.com
 	name = giveme5
 [gui]
 	recentrepo = /Users/naodongjiaolian/gitrepos
+	fontui = -family \"Source Code Pro\" -size 14 -weight normal -slant roman -underline 0 -overstrike 0
+	fontdiff = -family \"Source Code Pro\" -size 14 -weight normal -slant roman -underline 0 -overstrike 0
+	tabsize = 4
 [core]
 	excludesfile = /Users/naodongjiaolian/.gitignore_global
 [difftool "sourcetree"]

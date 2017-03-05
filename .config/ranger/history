@@ -1,24 +1,3 @@
-search tag
-default_linemode 
-shell chmod 777 *
-shell chmod -r 777 *
-shell man ./kill.1
-shell man ./ln.1
-shell man ./csh.a
- man ./csh.1
-shell man ./csh.1
-shell man sh.1
-shell man ./sh.1
-search v7
-search REqq
-search sodium
-search sodium.h
-search BSD
-find sockert
-search cd
-search syse
-shell cd
-search v1
 search autojump
 search sock
 shell pwd %f
@@ -26,25 +5,46 @@ shell cat "%f"
 mkdir 
 shell cd %s
 shell vim %s
-
 delete
 open_with man
-open_with 
 search 
 search man
 search python
 search brew
 search er
 search autho
-open_with q
 search proj
 shell file *
 search q
 shell open UserInterfaceState.xcuserstate
 open_with
-shell 
-delete 
 search yy
 search pp
-open_with vim
 search Google
+open_withq 
+open_with viom
+shell ls
+open_with qq
+shell 
+search info
+open_with open
+open_with info
+rema,e
+rename foursquareRelate0
+renamte foursquareRelate
+rename foursquareRelate
+
+shell zsh
+set hidden_filter
+set hidden_filter .*
+delete 
+delete q
+shel
+open_with q
+open_with 
+search http
+search apac
+search conf
+search obj
+open_with vim
+open_with emacs
