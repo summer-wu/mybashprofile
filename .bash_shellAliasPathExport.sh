@@ -311,7 +311,8 @@ function f_alias(){
 	alias socks5git="ALL_PROXY=socks5://127.0.0.1:1080 git"
 
 	#emacs25(emacs.app)
-	alias emacs25="/Applications/Emacs.app/Contents/MacOS/Emacs"
+	alias e25="/Applications/Emacs.app/Contents/MacOS/Emacs"
+	alias e25AndDisown="e25 &;disown;"
 }
 
 function f_export(){
@@ -319,7 +320,10 @@ function f_export(){
 	export CHEATCOLOR=true
 	export NODE_PATH=/usr/local/lib/node_modules
 	export HOMEBREW_VERBOSE=true #让homebrew总是--verbose
-	export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles #从国内地址下载bottles
+#	export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles #从安徽中国科技大学下载bottles
+	export HOMEBREW_CURL_VERBOSE=1
+	export HOMEBREW_NO_AUTO_UPDATE=1
+	export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles
 }
 
 function f_plugins(){
@@ -367,6 +371,11 @@ function f_theos(){
 function f_wsybin(){ #设置我自己的bin目录。我自己的命令都以wsy开头
    export PATH="$HOME/wsybin:$PATH"
 }
+function f_emacscask(){ #设置emacs cask的PATH
+   export PATH="$HOME/.cask/bin:$PATH"
+}
+
+
 
 f_setgnubinpath
 f_rvm
@@ -376,4 +385,6 @@ f_plugins
 f_changePS1ForBash
 f_wsybin
 f_theos
+f_emacscask
+
 

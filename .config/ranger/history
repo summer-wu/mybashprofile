@@ -1,4 +1,3 @@
-search autojump
 search sock
 shell pwd %f
 shell cat "%f"
@@ -46,5 +45,6 @@ search http
 search apac
 search conf
 search obj
-open_with vim
 open_with emacs
+open_with vim
+open_with 
