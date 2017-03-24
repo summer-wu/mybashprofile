@@ -308,11 +308,14 @@ function f_alias(){
 	alias firPublish='fir publish --token=d91c29edb9a2f19c3d053082c9420a1e '
 
 	#git proxy
-	alias socks5git="ALL_PROXY=socks5://127.0.0.1:1080 git"
+	alias exportS5="export ALL_PROXY=socks5://127.0.0.1:1080"
+	alias s5git="ALL_PROXY=socks5://127.0.0.1:1080 git"
 
 	#emacs25(emacs.app)
 	alias e25="/Applications/Emacs.app/Contents/MacOS/Emacs"
 	alias e25AndDisown="e25 &;disown;"
+  alias ec25="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient --create-frame" #总是创建frame #client
+  alias ec25tui="ec25 -nw" #在终端中显示
 }
 
 function f_export(){

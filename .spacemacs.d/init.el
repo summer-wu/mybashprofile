@@ -11,7 +11,7 @@ values."
    ;; `+distribution'. For now available distributions are `spacemacs-base'
    ;; or `s...pacemacs'. (default 'spacemacs)
    dotspacemacs-distribution 'spacemacs
-      ;; Lazy installatio...n of layers (i.e. layers are installed only when a file
+   ;; Lazy installatio...n of layers (i.e. layers are installed only when a file
    ;; with a supported type is opened). Possible values are `all', `unused'
    ;; and `nil'. `unused' will lazy install only unused layers (i.e. layers
    ;; not listed in variable `dotspacemacs-configuration-layers'), `all' will
@@ -49,6 +49,9 @@ values."
                       auto-completion-enable-help-tooltip t)
      ;; better-defaults
      emacs-lisp
+     (ranger :variables
+             ranger-show-preview t
+             ranger-show-dotfiles t)
      ;; git
      ;; markdown
      ;; org
@@ -58,6 +61,7 @@ values."
      ;; spell-checking
      ;; syntax-checking
      ;; version-control
+     better-defaults
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -68,6 +72,7 @@ values."
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
    dotspacemacs-excluded-packages '(
+                                    org-bullets ;它会将* **显示为图片
                                     exec-path-from-shell)
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
@@ -111,7 +116,7 @@ values."
    ;; with `:variables' keyword (similar to layers). Check the editing styles
    ;; section of the documentation for details on available variables.
    ;; (default 'vim)
-   dotspacemacs-editing-style 'vim
+   dotspacemacs-editing-style 'hybrid
    ;; If non nil output loading progress in `*Messages*' buffer. (default nil)
    dotspacemacs-verbose-loading nil
    ;; Specify the startup banner. Default value is `official', it displays
@@ -125,7 +130,7 @@ values."
    ;; the form `(list-type . list-size)`. If nil then it is disabled.
    ;; Possible values for list-type are:
    ;; `recents' `bookmarks' `projects' `agenda' `todos'."
-   ;; List sizes may be nil, in which case
+   ;; list sizes may be nil, in which case
    ;; `spacemacs-buffer-startup-lists-length' takes effect.
    dotspacemacs-startup-lists '((recents . 5)
                                 (projects . 7))
@@ -316,9 +321,46 @@ you should place your code here."
   (global-company-mode)
   (setq tramp-ssh-controlmaster-options
         "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
+  (setq-default spacemacs-show-trailing-whitespace nil);不显示结尾空格
+
+  ;;让frame标题始终显示完整路径。http://stackoverflow.com/questions/3669511/the-function-to-show-current-files-full-path-in-mini-buffer
+  (setq frame-title-format
+        (list (format "%s %%S: %%j " (system-name))
+              '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
+
+  ;;设置key绑定
+  (define-key evil-normal-state-map (kbd "C-e") 'mwim-end-of-line-or-code)
+  (define-key evil-motion-state-map (kbd "C-e") 'mwim-end-of-line-or-code)
+
+  ;;which-key 并且给它足够高
+  (setq which-key-side-window-max-height 0.8)
+
+  ;;保存ielm历史 http://emacs.stackexchange.com/questions/4221/remembering-history-between-sessions-in-inferior-emacs-lisp-mode
+  ;; comint mode是command interactive，shell、ielm都继承自comint mode。
+  ;; comint-intput-ring是 buffer local的，每次启动ielm的时候恢复自己维护的ielm-comint-input-ring。关闭（kill-hook）时保存。
+  (defvar ielm-comint-input-ring nil)
+
+  (defun set-ielm-comint-input-ring ()
+    ;; create a buffer-local binding of kill-buffer-hook
+    (make-local-variable 'kill-buffer-hook)
+    ;; save the value of comint-input-ring when this buffer is killed
+    (add-hook 'kill-buffer-hook #'save-ielm-comint-input-ring)
+    ;; restore saved value (if available)
+    (when ielm-comint-input-ring
+      (setq comint-input-ring ielm-comint-input-ring)
+      (message "Restoring comint-input-ring.Done.")))
+
+  (defun save-ielm-comint-input-ring ()
+    (setq ielm-comint-input-ring comint-input-ring)
+    (message "Saving comint-input-ring.Done.")
+    )
+
+  (require 'ielm)
+  (add-hook 'inferior-emacs-lisp-mode-hook #'set-ielm-comint-input-ring)
+  (add-to-list 'savehist-additional-variables 'ielm-comint-input-ring);添加到savehist中
+
   )
 
 ;;放在单独的文件
 (setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))
 (load custom-file 'no-error 'no-message)
-
